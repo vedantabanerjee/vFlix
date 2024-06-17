@@ -1,10 +1,15 @@
 import Input from "@/components/Input";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const Auth = () => {
     const [email, setEmail] = useState ('');
     const [name, setName] = useState ('');
     const [password, setPassword] = useState ('');
+
+    const [variant, setVariant] = useState('login');
+    const toggleVariant = useCallback(() => {
+        setVariant((currentVariant) => currentVariant === 'login' ? 'register' : 'login');
+    }, []);
 
 
     return(
@@ -17,15 +22,17 @@ const Auth = () => {
                 <div className="flex justify-center">
                     <div className="bg-black bg-opacity-70 px-16 py-16 self-center lg:w-2/5 lg:max-h-md rounded-md w-full">
                         <h2 className="text-white text-4xl mb-8 font-semibold text-center">
-                            Sign in
+                            {variant === 'login' ? 'Sign in' : 'Sign up'}
                         </h2>
                         <div className="flex flex-col gap-4">
+                            {variant === 'register' && (
                             <Input 
                                 label="Username"
                                 onChange={(ev:any)=>setName(ev.target.value)}
                                 id="name"
                                 value={name}
                             />
+                            )}
                             <Input 
                                 label="Email"
                                 onChange={(ev:any)=>setEmail(ev.target.value)}
@@ -42,12 +49,12 @@ const Auth = () => {
                             />
                         </div>
                         <button className="bg-pink-700 py-3 text-white rounded-md w-full mt-10 hover:bg-pink-900 transition">
-                            Login
+                            {variant === 'login' ? 'Login' : 'Sign up'}
                         </button>
                         <p className="text-neutral-500 mt-12">
-                            First time on vflix dude?
-                            <span className="text-white ml-1 hover:underline cursor-pointer">
-                                Create an account UwU!
+                            {variant === 'login' ? 'First time on vflix dude?' : 'Already have an account?'}
+                            <span onClick={toggleVariant} className="text-white ml-1 hover:underline cursor-pointer">
+                                {variant === 'login' ? 'Create an account UwU!' : 'Login?'} 
                             </span>
                         </p>
                     </div>
